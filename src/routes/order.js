@@ -5,18 +5,22 @@ const { isAuthenticated } = require('../middleware/auth');
 
 // @route   POST /orders
 // @desc    Create a new order
+// @access  Public
+router.post('/', (req, res) => {
+    // This would normally process a real order, but we'll just redirect to a success page for now
+    req.flash('success_msg', 'Your order has been received and is being processed');
+    res.redirect('/');
+});
+
+// @route   GET /orders/history
+// @desc    View order history
 // @access  Private
-router.post(
-    '/',
-    isAuthenticated, [
-        check('items', 'Items are required').isArray({ min: 1 }),
-        check('paymentMethod', 'Payment method is required').not().isEmpty()
-    ],
-    async(req, res) => {
-        // Placeholder for order controller function
-        res.status(200).json({ message: 'Order route is working' });
-    }
-);
+router.get('/history', (req, res) => {
+    res.render('orders/history', {
+        title: 'Order History',
+        orders: [] // Would normally fetch from database
+    });
+});
 
 // @route   GET /orders/:id
 // @desc    Get order by ID

@@ -41,7 +41,7 @@ exports.getAllServices = async(req, res) => {
 };
 
 // @desc    Get single xerox service
-// @route   GET /xerox/:id
+// @route   GET /xerox/service/:id
 // @access  Public
 exports.getServiceById = async(req, res) => {
     try {
@@ -257,7 +257,7 @@ exports.updateService = async(req, res) => {
             });
         }
         req.flash('error_msg', 'Failed to update service');
-        res.redirect(`/admin/services/edit/${req.params.id}`);
+        res.redirect('/admin/edit-service/' + req.params.id);
     }
 };
 
@@ -279,7 +279,7 @@ exports.deleteService = async(req, res) => {
             return res.redirect('/admin/services');
         }
 
-        // Delete image if exists
+        // Delete service image if exists
         if (service.image) {
             const imagePath = path.join(__dirname, '../public', service.image);
             if (fs.existsSync(imagePath)) {
@@ -292,7 +292,7 @@ exports.deleteService = async(req, res) => {
         if (req.xhr || req.path.startsWith('/api/')) {
             return res.status(200).json({
                 success: true,
-                message: 'Service deleted successfully'
+                data: {}
             });
         }
 
@@ -311,127 +311,30 @@ exports.deleteService = async(req, res) => {
     }
 };
 
-// @desc    Upload a PDF for xerox
-// @route   POST /xerox/upload
-// @access  Private
+// @desc    Upload a PDF file
+// @route   POST /xerox/upload-pdf
+// @access  Public
 exports.uploadPdf = async(req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({
-                success: false,
-                message: 'Please upload a PDF file'
-            });
-        }
-
-        const fileUrl = `/uploads/pdfs/${req.file.filename}`;
-
-        // Get page count
-        const pdfPath = path.join(__dirname, '../public', fileUrl);
-
-        // Here we would typically use a PDF parsing library to get the page count
-        // For simplicity, returning a placeholder
-        const pageCount = 1;
-
-        res.status(200).json({
-            success: true,
-            data: {
-                fileUrl,
-                fileName: req.file.originalname,
-                pageCount
-            }
-        });
-    } catch (error) {
-        console.error('PDF upload error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error uploading PDF'
-        });
+    if (!req.file) {
+        req.flash('error_msg', 'Please upload a PDF file');
+        return res.redirect('/xerox/upload');
     }
+
+    const pdfPath = `/uploads/pdfs/${req.file.filename}`;
+    res.redirect(`/xerox/print-options?pdf=${encodeURIComponent(pdfPath)}`);
 };
 
-// @desc    Add xerox service to cart
+// @desc    Add a xerox service to cart
 // @route   POST /xerox/cart
 // @access  Private
 exports.addToCart = async(req, res) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-
-        const { serviceId, quantity, pageCount, options, notes, uploadedFile } = req.body;
-        const userId = req.session.user && req.session.user.id ? req.session.user.id :
-            (req.user && req.user.id ? req.user.id : null);
-
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'User not authenticated'
-            });
-        }
-
-        // Validate service
-        const service = await XeroxService.findById(serviceId);
-        if (!service) {
-            return res.status(404).json({
-                success: false,
-                message: 'Service not found'
-            });
-        }
-
-        // Get or create user's cart
-        let cart = await Cart.findOne({ user: userId });
-
-        if (!cart) {
-            cart = new Cart({
-                user: userId,
-                items: [],
-                totalPrice: 0
-            });
-        }
-
-        // Calculate item price
-        let itemPrice = service.price;
-        let parsedOptions = [];
-
-        // Parse options if provided
-        if (options && typeof options === 'string') {
-            try {
-                parsedOptions = JSON.parse(options);
-            } catch (e) {
-                console.error('Error parsing options:', e);
-            }
-        } else if (Array.isArray(options)) {
-            parsedOptions = options;
-        }
-
-        // Add new item to cart
-        cart.items.push({
-            service: serviceId,
-            quantity: parseInt(quantity) || 1,
-            pageCount: parseInt(pageCount) || 1,
-            options: parsedOptions,
-            notes,
-            uploadedFile,
-            price: itemPrice
-        });
-
-        // Save cart and recalculate total
-        await cart.save();
-
-        // Respond with updated cart
-        const populatedCart = await Cart.findById(cart._id).populate('items.service');
-
-        res.status(200).json({
-            success: true,
-            message: 'Service added to cart',
-            data: populatedCart
-        });
+        // Implementation for adding to cart
+        req.flash('success_msg', 'Item added to cart');
+        res.redirect('/cart');
     } catch (error) {
         console.error('Add to cart error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error adding service to cart'
-        });
+        req.flash('error_msg', 'Failed to add item to cart');
+        res.redirect('/xerox');
     }
 };

@@ -13,10 +13,10 @@ dotenv.config();
 const Book = require('./models/Book');
 
 // Import routes
-const authRoutes = require('./routes/auth');
+// const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
-// const xeroxRoutes = require('./routes/xerox');
+const xeroxRoutes = require('./routes/xerox');
 const orderRoutes = require('./routes/order');
 const paymentRoutes = require('./routes/payment');
 
@@ -62,10 +62,10 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Routes
-app.use('/auth', authRoutes);
+// app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
-// app.use('/xerox', xeroxRoutes);
+app.use('/xerox', xeroxRoutes);
 app.use('/orders', orderRoutes);
 app.use('/payments', paymentRoutes);
 
@@ -108,11 +108,6 @@ app.get('/books/:id', async(req, res) => {
         req.flash('error_msg', 'Failed to fetch book details');
         res.redirect('/books');
     }
-});
-
-// Temporary xerox route
-app.get('/xerox', (req, res) => {
-    res.render('home', { message: 'Xerox services would be displayed here' });
 });
 
 // Home route

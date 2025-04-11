@@ -1,66 +1,60 @@
 const mongoose = require('mongoose');
 
-const xeroxServiceSchema = new mongoose.Schema({
+const XeroxServiceSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Service name is required'],
+        required: true,
         trim: true
     },
     description: {
         type: String,
-        required: [true, 'Description is required']
+        required: true
     },
     price: {
         type: Number,
-        required: [true, 'Price is required'],
-        min: [0, 'Price must be positive']
+        required: true,
+        min: 0
     },
     priceUnit: {
         type: String,
-        enum: ['per_page', 'per_document', 'per_book'],
-        default: 'per_page'
+        enum: ['page', 'document', 'hour'],
+        default: 'page'
     },
     category: {
         type: String,
-        required: [true, 'Category is required'],
-        enum: ['document_xerox', 'book_xerox', 'pdf_printing', 'binding', 'other']
+        required: true,
+        trim: true
     },
-    additionalOptions: [{
-        name: {
-            type: String,
-            required: true
-        },
-        price: {
-            type: Number,
-            required: true,
-            min: 0
-        },
-        description: String
-    }],
     isColor: {
         type: Boolean,
         default: false
     },
     paperSize: {
         type: String,
-        enum: ['A4', 'A3', 'Letter', 'Legal', 'custom'],
+        enum: ['A4', 'A5', 'A3', 'Letter', 'Legal'],
         default: 'A4'
+    },
+    estimatedTime: {
+        type: String,
+        default: '1-2 days'
+    },
+    additionalOptions: [{
+        name: String,
+        price: Number,
+        description: String
+    }],
+    image: {
+        type: String,
+        default: '/images/services/default.jpg'
     },
     isActive: {
         type: Boolean,
         default: true
     },
-    estimatedTime: {
-        type: String,
-        default: 'Varies by order size'
-    },
-    image: {
-        type: String
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
-}, {
-    timestamps: true
 });
 
-const XeroxService = mongoose.model('XeroxService', xeroxServiceSchema);
-
-module.exports = XeroxService;
+module.exports = mongoose.model('XeroxService', XeroxServiceSchema);

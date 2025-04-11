@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> - Xerox E-Commerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .drag-area {
+            border: 2px dashed #6c757d;
+            border-radius: 5px;
+            padding: 50px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .drag-area.active {
+            border-color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .drag-area .icon {
+            font-size: 50px;
+            color: #6c757d;
+        }
+        
+        .drag-area h4 {
+            margin: 15px 0;
+        }
+        
+        .drag-area .browse-link {
+            text-decoration: underline;
+            color: #0d6efd;
+            cursor: pointer;
+        }
+        
+        .drag-area.active .icon,
+        .drag-area.active h4 {
+            color: #0d6efd;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+
+        <main class="container my-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/xerox">Xerox Services</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Upload PDF</li>
+                </ol>
+            </nav>
+
+            <h1 class="mb-4">Upload PDF for Printing</h1>
+
+            <% if (error) { %>
+                <div class="alert alert-danger mb-4">
+                    <%= error %>
+                </div>
+                <% } %>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form action="/xerox/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+                                        <div class="drag-area mb-4" id="dragArea">
+                                            <i class="bi bi-file-earmark-pdf icon"></i>
+                                            <h4>Drag & Drop your PDF file here</h4>
+                                            <p>or</p>
+                                            <span class="browse-link" id="browseLink">Browse Files</span>
+                                            <input type="file" name="pdfFile" id="pdfFile" accept=".pdf" hidden>
+                                        </div>
+
+                                        <div id="fileInfo" class="mb-4" style="display: none;">
+                                            <div class="alert alert-success">
+                                                <i class="bi bi-check-circle-fill me-2"></i>
+                                                <span id="fileName">No file selected</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary btn-lg" id="uploadBtn" disabled>
+                  Continue to Printing Options
+                </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">PDF Requirements</h5>
+                                    <ul class="card-text">
+                                        <li>Maximum file size: 10MB</li>
+                                        <li>File format: PDF only</li>
+                                        <li>All pages should be the same size</li>
+                                        <li>Ensure the PDF is unlocked</li>
+                                    </ul>
+
+                                    <hr>
+
+                                    <h5 class="card-title">What's Next?</h5>
+                                    <p class="card-text">After uploading your PDF, you'll be able to customize your printing options including:</p>
+                                    <ul>
+                                        <li>Paper size and quality</li>
+                                        <li>Color or black & white</li>
+                                        <li>Single or double-sided</li>
+                                        <li>Binding options</li>
+                                        <li>Number of copies</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </main>
+
+        <%- include('../partials/footer') %>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const dragArea = document.getElementById('dragArea');
+                    const browseLink = document.getElementById('browseLink');
+                    const fileInput = document.getElementById('pdfFile');
+                    const fileInfo = document.getElementById('fileInfo');
+                    const fileName = document.getElementById('fileName');
+                    const uploadBtn = document.getElementById('uploadBtn');
+
+                    // When browse link is clicked
+                    browseLink.addEventListener('click', () => {
+                        fileInput.click();
+                    });
+
+                    // When file is selected using the file input
+                    fileInput.addEventListener('change', function() {
+                        handleFiles(this.files);
+                    });
+
+                    // Drag and drop events
+                    ['dragover', 'dragleave', 'drop'].forEach(eventName => {
+                        dragArea.addEventListener(eventName, preventDefaults, false);
+                    });
+
+                    function preventDefaults(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+
+                    // Add active class when file is dragged over
+                    dragArea.addEventListener('dragover', function() {
+                        this.classList.add('active');
+                    });
+
+                    // Remove active class when file is dragged away
+                    dragArea.addEventListener('dragleave', function() {
+                        this.classList.remove('active');
+                    });
+
+                    // Handle dropped files
+                    dragArea.addEventListener('drop', function(e) {
+                        this.classList.remove('active');
+                        handleFiles(e.dataTransfer.files);
+                    });
+
+                    // Handle the selected files
+                    function handleFiles(files) {
+                        if (files.length > 0) {
+                            const file = files[0];
+
+                            // Check if file is a PDF
+                            if (file.type !== 'application/pdf') {
+                                alert('Please select a PDF file.');
+                                return;
+                            }
+
+                            // Check file size (max 10MB)
+                            if (file.size > 10 * 1024 * 1024) {
+                                alert('File size exceeds 10MB. Please select a smaller file.');
+                                return;
+                            }
+
+                            // Show file info and enable upload button
+                            fileName.textContent = file.name;
+                            fileInfo.style.display = 'block';
+                            uploadBtn.disabled = false;
+
+                            // Set the file to the file input
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            fileInput.files = dataTransfer.files;
+                        }
+                    }
+                });
+            </script>
+</body>
+
+</html>

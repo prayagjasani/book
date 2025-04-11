@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> - Xerox E-Commerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+
+        <main class="container my-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/xerox">Xerox Services</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Binding Services</li>
+                </ol>
+            </nav>
+
+            <h1 class="mb-4">Binding Services</h1>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="lead mb-4">Choose from our range of professional binding options to give your documents a polished, professional finish.</p>
+
+                    <div class="row mb-5">
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Spiral Binding</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <img src="https://via.placeholder.com/300x200?text=Spiral+Binding" class="img-fluid rounded" alt="Spiral Binding">
+                                    </div>
+                                    <p>Spiral binding is ideal for manuals, reports, and presentations. Documents can be opened flat and folded back for easy reading.</p>
+                                    <ul class="mb-3">
+                                        <li>Durable plastic coil binding</li>
+                                        <li>Available in black, white, and colors</li>
+                                        <li>Best for documents up to 300 pages</li>
+                                        <li>Good for documents that need to lay flat</li>
+                                    </ul>
+                                    <div class="text-center">
+                                        <p class="fw-bold mb-3">Starting at $3.99</p>
+                                        <a href="/xerox/upload" class="btn btn-primary">Get Started</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Staple Binding</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <img src="https://via.placeholder.com/300x200?text=Staple+Binding" class="img-fluid rounded" alt="Staple Binding">
+                                    </div>
+                                    <p>Simple and cost-effective, staple binding is perfect for small documents, handouts, and basic reports.</p>
+                                    <ul class="mb-3">
+                                        <li>Quick and economical option</li>
+                                        <li>Corner or edge stapling available</li>
+                                        <li>Best for documents up to 50 pages</li>
+                                        <li>Ideal for temporary or short-term use</li>
+                                    </ul>
+                                    <div class="text-center">
+                                        <p class="fw-bold mb-3">Starting at $1.99</p>
+                                        <a href="/xerox/upload" class="btn btn-primary">Get Started</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Hardcover Binding</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <img src="https://via.placeholder.com/300x200?text=Hardcover+Binding" class="img-fluid rounded" alt="Hardcover Binding">
+                                    </div>
+                                    <p>Premium hardcover binding gives your documents a professional, book-like finish. Perfect for theses, portfolios, and important presentations.</p>
+                                    <ul class="mb-3">
+                                        <li>Professional, durable finish</li>
+                                        <li>Multiple cover materials and colors</li>
+                                        <li>Can include embossed text or designs</li>
+                                        <li>Best for documents up to 500 pages</li>
+                                    </ul>
+                                    <div class="text-center">
+                                        <p class="fw-bold mb-3">Starting at $9.99</p>
+                                        <a href="/xerox/upload" class="btn btn-primary">Get Started</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="card-title mb-0">Paperback Binding</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <img src="https://via.placeholder.com/300x200?text=Paperback+Binding" class="img-fluid rounded" alt="Paperback Binding">
+                                    </div>
+                                    <p>Professional softcover binding provides a book-like finish with a flexible cover. Great for reports, manuals, and small books.</p>
+                                    <ul class="mb-3">
+                                        <li>Glued spine with flexible cover</li>
+                                        <li>Custom cover designs available</li>
+                                        <li>Best for documents up to 400 pages</li>
+                                        <li>Professional look at a lower cost than hardcover</li>
+                                    </ul>
+                                    <div class="text-center">
+                                        <p class="fw-bold mb-3">Starting at $5.99</p>
+                                        <a href="/xerox/upload" class="btn btn-primary">Get Started</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">How It Works</h5>
+                            <ol class="card-text">
+                                <li>Upload your document</li>
+                                <li>Select your preferred binding option</li>
+                                <li>Customize cover and finishing touches</li>
+                                <li>Place your order</li>
+                                <li>Receive your professionally bound document</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Already Have Printed Documents?</h5>
+                            <p>We also offer binding services for documents you've already printed. Simply bring your documents to our store, and we'll bind them for you.</p>
+                            <p><strong>Store Hours:</strong><br>Monday-Friday: 9am-6pm<br>Saturday: 10am-4pm</p>
+                            <a href="#" class="btn btn-outline-primary">Find Our Locations</a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Bulk Orders</h5>
+                            <p>Need multiple documents bound? We offer discounts for bulk orders. Contact us for a custom quote.</p>
+                            <a href="#" class="btn btn-outline-primary">Request Quote</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <%- include('../partials/footer') %>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
