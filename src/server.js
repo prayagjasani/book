@@ -9,11 +9,14 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+// Import models
+const Book = require('./models/Book');
+
 // Import routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
-const xeroxRoutes = require('./routes/xerox');
+// const xeroxRoutes = require('./routes/xerox');
 const orderRoutes = require('./routes/order');
 const paymentRoutes = require('./routes/payment');
 
@@ -21,13 +24,10 @@ const paymentRoutes = require('./routes/payment');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB - commented out for testing without MongoDB
-/* 
-mongoose.connect(process.env.MONGODB_URI)
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/xerox')
     .then(() => console.log('MongoDB connected successfully'))
     .catch(err => console.error('MongoDB connection error:', err));
-*/
-console.log('MongoDB connection skipped for development');
 
 // Middleware
 app.use(express.json());
@@ -62,150 +62,71 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Routes
-// Disable database-dependent routes for testing
-// app.use('/auth', authRoutes);
-// app.use('/user', userRoutes);
-// app.use('/admin', adminRoutes);
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
+app.use('/admin', adminRoutes);
 // app.use('/xerox', xeroxRoutes);
-// app.use('/orders', orderRoutes);
-// app.use('/payments', paymentRoutes);
+app.use('/orders', orderRoutes);
+app.use('/payments', paymentRoutes);
 
-// Home route
-app.get('/', (req, res) => {
-    res.render('home');
-});
+// Books routes
+app.get('/books', async(req, res) => {
+    try {
+        const category = req.query.category;
+        const filter = category ? { category } : {};
 
-// Sample books data
-const books = [{
-        id: 1,
-        title: "Data Structures and Algorithms in Java",
-        author: "Robert Lafore",
-        description: "Comprehensive guide to data structures and algorithms using Java programming language.",
-        price: 25.99,
-        pageCount: 800,
-        coverImage: "/images/books/dsa-java.jpg",
-        category: "Computer Science"
-    },
-    {
-        id: 2,
-        title: "Clean Code: A Handbook of Agile Software Craftsmanship",
-        author: "Robert C. Martin",
-        description: "A guide to writing clean, maintainable code and the principles of software craftsmanship.",
-        price: 29.99,
-        pageCount: 464,
-        coverImage: "/images/books/clean-code.jpg",
-        category: "Software Engineering"
-    },
-    {
-        id: 3,
-        title: "Introduction to Algorithms",
-        author: "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
-        description: "Widely known as the 'CLRS' textbook, this is a comprehensive reference on computer algorithms.",
-        price: 35.99,
-        pageCount: 1312,
-        coverImage: "/images/books/clrs.jpg",
-        category: "Computer Science"
-    },
-    {
-        id: 4,
-        title: "Design Patterns: Elements of Reusable Object-Oriented Software",
-        author: "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
-        description: "The definitive guide to design patterns in software engineering, written by the 'Gang of Four'.",
-        price: 27.99,
-        pageCount: 416,
-        coverImage: "/images/books/design-patterns.jpg",
-        category: "Software Engineering"
-    },
-    {
-        id: 5,
-        title: "The Pragmatic Programmer",
-        author: "Andrew Hunt, David Thomas",
-        description: "Practical advice for programmers to improve their craft and career.",
-        price: 24.99,
-        pageCount: 352,
-        coverImage: "/images/books/pragmatic-programmer.jpg",
-        category: "Software Engineering"
-    },
-    {
-        id: 6,
-        title: "Artificial Intelligence: A Modern Approach",
-        author: "Stuart Russell, Peter Norvig",
-        description: "The standard textbook in artificial intelligence, covering the full spectrum of AI techniques.",
-        price: 39.99,
-        pageCount: 1136,
-        coverImage: "/images/books/ai-modern-approach.jpg",
-        category: "Artificial Intelligence"
-    },
-    {
-        id: 7,
-        title: "Database Systems: The Complete Book",
-        author: "Hector Garcia-Molina, Jeffrey D. Ullman, Jennifer Widom",
-        description: "Comprehensive introduction to database systems and database design.",
-        price: 32.99,
-        pageCount: 1119,
-        coverImage: "/images/books/database-systems.jpg",
-        category: "Database"
-    },
-    {
-        id: 8,
-        title: "Computer Networking: A Top-Down Approach",
-        author: "James F. Kurose, Keith W. Ross",
-        description: "A leading textbook on computer networking that takes a top-down approach.",
-        price: 28.99,
-        pageCount: 800,
-        coverImage: "/images/books/computer-networking.jpg",
-        category: "Networking"
-    },
-    {
-        id: 9,
-        title: "Operating System Concepts",
-        author: "Abraham Silberschatz, Peter B. Galvin, Greg Gagne",
-        description: "Known as the 'dinosaur book', this is a classic text on operating system principles.",
-        price: 31.99,
-        pageCount: 976,
-        coverImage: "/images/books/os-concepts.jpg",
-        category: "Operating Systems"
-    },
-    {
-        id: 10,
-        title: "Machine Learning: A Probabilistic Perspective",
-        author: "Kevin P. Murphy",
-        description: "A comprehensive introduction to machine learning that emphasizes a probabilistic approach.",
-        price: 45.99,
-        pageCount: 1104,
-        coverImage: "/images/books/ml-probabilistic.jpg",
-        category: "Machine Learning"
+        const books = await Book.find(filter).sort({ title: 1 });
+        res.render('books', { books });
+    } catch (error) {
+        console.error('Error fetching books:', error);
+        req.flash('error_msg', 'Failed to fetch books');
+        res.redirect('/');
     }
-];
-
-// Books route
-app.get('/books', (req, res) => {
-    res.render('books', { books });
 });
 
 // Book detail route
-app.get('/books/:id', (req, res) => {
-    const bookId = parseInt(req.params.id);
-    const book = books.find(b => b.id === bookId);
+app.get('/books/:id', async(req, res) => {
+    try {
+        const book = await Book.findById(req.params.id);
 
-    if (!book) {
-        return res.status(404).render('404');
+        if (!book) {
+            return res.status(404).render('404');
+        }
+
+        // Get related books from the same category
+        const relatedBooks = await Book.find({
+            category: book.category,
+            _id: { $ne: book._id }
+        }).limit(3);
+
+        res.render('book-detail', { book, relatedBooks });
+    } catch (error) {
+        console.error('Error fetching book details:', error);
+        if (error.kind === 'ObjectId') {
+            return res.status(404).render('404');
+        }
+        req.flash('error_msg', 'Failed to fetch book details');
+        res.redirect('/books');
     }
-
-    res.render('book-detail', { book });
 });
 
-// Temporary routes for testing without database
+// Temporary xerox route
 app.get('/xerox', (req, res) => {
     res.render('home', { message: 'Xerox services would be displayed here' });
 });
 
-app.get('/auth/login', (req, res) => {
-    res.render('home', { message: 'Login page would be displayed here' });
-});
-
-app.get('/auth/register', (req, res) => {
-    res.render('home', { message: 'Register page would be displayed here' });
+// Home route
+app.get('/', async(req, res) => {
+    try {
+        // Get 6 random books for the homepage showcase
+        const featuredBooks = await Book.aggregate([
+            { $sample: { size: 6 } }
+        ]);
+        res.render('home', { featuredBooks });
+    } catch (error) {
+        console.error('Error fetching featured books:', error);
+        res.render('home', { featuredBooks: [] });
+    }
 });
 
 // Error handler middleware
