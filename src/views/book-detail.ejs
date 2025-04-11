@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= book.title %> - Xerox E-Commerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <%- include('./partials/header') %>
+
+        <main class="container my-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/books">Books</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <%= book.title %>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="text-center p-3">
+                            <img src="https://via.placeholder.com/400x500?text=<%= encodeURIComponent(book.title) %>" class="img-fluid" alt="<%= book.title %>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <h1 class="mb-2">
+                        <%= book.title %>
+                    </h1>
+                    <p class="text-muted">By
+                        <%= book.author %>
+                    </p>
+                    <span class="badge bg-primary mb-3"><%= book.category %></span>
+
+                    <hr>
+
+                    <div class="row mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="d-flex flex-column">
+                                <span class="text-muted">Price</span>
+                                <span class="fw-bold fs-4">$<%= book.price.toFixed(2) %></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="d-flex flex-column">
+                                <span class="text-muted">Pages</span>
+                                <span class="fw-bold fs-4"><%= book.pageCount %></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Description</h4>
+                    <p>
+                        <%= book.description %>
+                    </p>
+
+                    <hr>
+
+                    <h4 class="mb-3">Xerox Options</h4>
+                    <form class="add-to-cart-form mb-4">
+                        <input type="hidden" name="bookId" value="<%= book.id %>">
+
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Xerox Configuration</h5>
+
+                                <div class="mb-3">
+                                    <label for="copyType" class="form-label">Copy Type</label>
+                                    <select class="form-select" id="copyType" name="copyType" required>
+                  <option value="">Select copy type</option>
+                  <option value="blackAndWhite">Black & White</option>
+                  <option value="color">Color</option>
+                </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="paperSize" class="form-label">Paper Size</label>
+                                    <select class="form-select" id="paperSize" name="paperSize" required>
+                  <option value="">Select paper size</option>
+                  <option value="a4">A4</option>
+                  <option value="a5">A5</option>
+                  <option value="letter">Letter</option>
+                  <option value="legal">Legal</option>
+                </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="paperQuality" class="form-label">Paper Quality</label>
+                                    <select class="form-select" id="paperQuality" name="paperQuality" required>
+                  <option value="">Select paper quality</option>
+                  <option value="standard">Standard (70 GSM)</option>
+                  <option value="premium">Premium (90 GSM)</option>
+                  <option value="highEnd">High-End (120 GSM)</option>
+                </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="binding" class="form-label">Binding</label>
+                                    <select class="form-select" id="binding" name="binding" required>
+                  <option value="">Select binding type</option>
+                  <option value="none">None</option>
+                  <option value="spiral">Spiral Binding</option>
+                  <option value="hardcover">Hardcover Binding</option>
+                  <option value="paperback">Paperback Binding</option>
+                </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="copies" class="form-label">Number of Copies</label>
+                                    <input type="number" class="form-control" id="copies" name="copies" min="1" max="100" value="1" required>
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="doubleSided" name="doubleSided" value="true">
+                                    <label class="form-check-label" for="doubleSided">
+                  Double-sided printing
+                </label>
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="coverPage" name="coverPage" value="true">
+                                    <label class="form-check-label" for="coverPage">
+                  Include cover page
+                </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            <a href="/books" class="btn btn-outline-secondary">Continue Shopping</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3 class="mb-4">You might also like</h3>
+                    <div class="row">
+                        <% for(let i = 1; i <= 3; i++) { %>
+                            <div class="col-md-4 mb-4">
+                                <div class="card service-card h-100">
+                                    <div class="text-center p-3">
+                                        <img src="https://via.placeholder.com/300x400?text=Recommendation+<%= i %>" class="card-img-top" alt="Recommendation <%= i %>">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Similar Book
+                                            <%= i %>
+                                        </h5>
+                                        <p class="card-text">Another book you might be interested in.</p>
+                                        <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <%- include('./partials/footer') %>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="/js/main.js"></script>
+</body>
+
+</html>

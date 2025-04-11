@@ -1,0 +1,33 @@
+{
+    "name": "xerox",
+    "version": "1.0.0",
+    "description": "E-commerce platform for book xerox and PDF xerox services",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": ["e-commerce", "xerox", "pdf", "books", "printing"],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "connect-flash": "^0.1.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "ejs": "^3.1.9",
+        "express": "^4.18.2",
+        "express-session": "^1.17.3",
+        "express-validator": "^7.0.1",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^8.0.3",
+        "multer": "^1.4.5-lts.1",
+        "pdfkit": "^0.14.0",
+        "stripe": "^14.10.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.2"
+    }
+}

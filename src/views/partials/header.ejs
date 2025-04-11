@@ -1,0 +1,80 @@
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Xerox E-Commerce</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/books">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/xerox">Services</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <% if (locals.user) { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <%= user.name %>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="/user/dashboard">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+                                <li><a class="dropdown-item" href="/user/orders">My Orders</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/cart">
+                                <i class="bi bi-cart"></i> Cart
+                            </a>
+                        </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/auth/login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/auth/register">Register</a>
+                            </li>
+                            <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <% if (locals.success_msg && success_msg.length > 0) { %>
+        <div class="container mt-3">
+            <div class="alert alert-success alert-dismissible fade show">
+                <%= success_msg %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+        <% } %>
+
+            <% if (locals.error_msg && error_msg.length > 0) { %>
+                <div class="container mt-3">
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <%= error_msg %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                </div>
+                <% } %>
+
+                    <% if (locals.error && error.length > 0) { %>
+                        <div class="container mt-3">
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <%= error %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        </div>
+                        <% } %>
+</header>

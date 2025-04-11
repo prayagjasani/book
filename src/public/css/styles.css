@@ -1,0 +1,109 @@
+/* Global Styles */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}
+
+
+/* Card styles */
+
+.service-card {
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.service-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+
+/* Order status badges */
+
+.badge-pending {
+    background-color: #ffc107;
+}
+
+.badge-processing {
+    background-color: #17a2b8;
+}
+
+.badge-shipped {
+    background-color: #007bff;
+}
+
+.badge-delivered {
+    background-color: #28a745;
+}
+
+.badge-cancelled {
+    background-color: #dc3545;
+}
+
+
+/* Auth pages */
+
+.auth-container {
+    max-width: 500px;
+    margin: 2rem auto;
+}
+
+
+/* Cart */
+
+.cart-item {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.cart-item img {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+}
+
+
+/* Dashboard */
+
+.stats-card {
+    background: linear-gradient(45deg, #4158D0, #C850C0);
+    color: white;
+}
+
+.stats-card h3 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
+/* Custom utility classes */
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.img-thumbnail {
+    max-height: 150px;
+}
+
+
+/* Responsive adjustments */
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
