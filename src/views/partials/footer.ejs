@@ -1,30 +1,73 @@
-<footer class="footer mt-auto py-3 bg-dark text-light">
+<footer class="footer mt-auto py-4 bg-dark text-light">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <h5>Xerox E-Commerce</h5>
-                <p>Your one-stop solution for book and PDF xerox services!</p>
+        <div class="row gy-4">
+            <div class="col-lg-4 col-md-6">
+                <h5><i class="bi bi-printer me-2"></i> Xerox E-Commerce</h5>
+                <p class="mb-3">Your one-stop solution for book and PDF xerox services!</p>
+                <div class="d-flex gap-3 social-icons">
+                    <a href="#" class="text-light fs-5"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light fs-5"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-light fs-5"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-light fs-5"><i class="bi bi-linkedin"></i></a>
+                </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-2 col-md-6 col-sm-6">
                 <h5>Quick Links</h5>
-                <ul class="list-unstyled">
-                    <li><a href="/" class="text-light">Home</a></li>
-                    <li><a href="/xerox" class="text-light">Services</a></li>
-                    <li><a href="/auth/login" class="text-light">Login</a></li>
-                    <li><a href="/auth/register" class="text-light">Register</a></li>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="/" class="text-light d-block mb-2"><i class="bi bi-chevron-right me-1"></i> Home</a></li>
+                    <li><a href="/xerox" class="text-light d-block mb-2"><i class="bi bi-chevron-right me-1"></i> Services</a></li>
+                    <li><a href="/books" class="text-light d-block mb-2"><i class="bi bi-chevron-right me-1"></i> Books</a></li>
+                    <li><a href="/auth/login" class="text-light d-block mb-2"><i class="bi bi-chevron-right me-1"></i> Login</a></li>
+                    <li><a href="/auth/register" class="text-light d-block mb-2"><i class="bi bi-chevron-right me-1"></i> Register</a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <h5>Our Services</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="/xerox/upload" class="text-light d-block mb-2"><i class="bi bi-chevron-right me-1"></i> PDF Printing</a></li>
+                    <li><a href="/xerox/binding" class="text-light d-block mb-2"><i class="bi bi-chevron-right me-1"></i> Book Binding</a></li>
+                    <li><a href="/books" class="text-light d-block mb-2"><i class="bi bi-chevron-right me-1"></i> Book Xerox</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
                 <h5>Contact Us</h5>
-                <address>
-          Email: <a href="mailto:info@xerox-ecommerce.com" class="text-light">info@xerox-ecommerce.com</a><br>
-          Phone: +1 (123) 456-7890
-        </address>
+                <address class="mb-0">
+                    <p class="mb-2"><i class="bi bi-envelope me-2"></i> <a href="mailto:info@xerox-ecommerce.com" class="text-light">info@xerox-ecommerce.com</a></p>
+                    <p class="mb-2"><i class="bi bi-telephone me-2"></i> +1 (123) 456-7890</p>
+                    <p class="mb-0"><i class="bi bi-geo-alt me-2"></i> 123 Main Street, New York, NY 10001</p>
+                </address>
             </div>
         </div>
-        <div class="text-center mt-3">
+        <div class="border-top border-secondary mt-4 pt-4 text-center">
             <p class="mb-0">&copy;
                 <%= new Date().getFullYear() %> Xerox E-Commerce. All rights reserved.</p>
+            <div class="mt-2">
+                <a href="#" class="text-light me-3 small">Privacy Policy</a>
+                <a href="#" class="text-light me-3 small">Terms of Service</a>
+                <a href="#" class="text-light small">FAQ</a>
+            </div>
         </div>
     </div>
 </footer>
+
+<style>
+    .footer-links a {
+        transition: all 0.3s ease;
+        opacity: 0.8;
+    }
+    
+    .footer-links a:hover {
+        opacity: 1;
+        transform: translateX(5px);
+        text-decoration: none;
+    }
+    
+    .social-icons a {
+        transition: all 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+        transform: translateY(-3px);
+        color: #fff !important;
+    }
+</style>
